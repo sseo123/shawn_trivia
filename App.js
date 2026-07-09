@@ -4,14 +4,50 @@ import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 
 const CHATBOT_USER_OBJ = {
   _id: 2,
-  name: "React Native Chatbot",
+  name: "Cat, the bot",
   avatar: "https://loremflickr.com/140/140",
 };
 
+const CHATBOT_USER_OBJ_1 = {
+  _id: 3,
+  name: "Dog, the bot",
+  avatar: "https://loremflickr.com/320/240/dog",
+};
+
 const game_db = [
-  { question: "1 + 1", answer: "2" },
-  { question: "2 + 2", answer: "4" },
-  { question: "3 + 3", answer: "6" },
+  {
+    question: "What is so fragile that saying its name breaks it?",
+    answer: "Silence",
+  },
+  {
+    question:
+      "What can run but never walks, has a mouth but never talks, has a head but never weeps, has a bed but never sleeps?",
+    answer: "River",
+  },
+  { question: "What can fill a room but takes up no space?", answer: "Light" },
+  {
+    question:
+      "If you drop me I’m sure to crack, but give me a smile and I’ll always smile back. What am I?",
+    answer: "Mirror",
+  },
+  {
+    question: "The more you take, the more you leave behind. What are they?",
+    answer: "Footsteps",
+  },
+  {
+    question:
+      "I turn once, what is out will not get in. I turn again, what is in will not get out. What am I?",
+    answer: "Key",
+  },
+  {
+    question: "People make me, save me, change me, raise me. What am I?",
+    answer: "Key",
+  },
+  {
+    question:
+      "I am always hungry and will die if not fed, but whatever I touch will soon turn red. What am I?",
+    answer: "Fire",
+  },
 ];
 
 export default function App() {
@@ -23,7 +59,7 @@ export default function App() {
     if (messages.length < 1) {
       // Add a "starting message" when chat UI first loads
       addBotMessage(
-        "Hello, welcome to simple trivia! Say 'Yes' when you're ready to play!",
+        "Hello, I'm a cat. Welcome to Shawn's riddle game! Say 'Yes' when you're ready to play!",
       );
     }
   }, []);
@@ -47,13 +83,24 @@ export default function App() {
     ]);
   };
 
+  const addBotMessageDog = (text) => {
+    addNewMessage([
+      {
+        _id: Math.round(Math.random() * 1000000),
+        text: text,
+        createdAt: new Date(),
+        user: CHATBOT_USER_OBJ_1,
+      },
+    ]);
+  };
+
   const respondToUser = (userMessages) => {
     console.log("Recent user msg:", userMessages[0].text);
     if (userMessages[0].text.toLowerCase() == "yes") {
       startGame();
     } else {
       addBotMessage(
-        "Hello, welcome to simple trivia! Say 'Yes' when you're ready to play!",
+        "Hello, welcome to Shawn's riddle game! Say 'Yes' when you're ready to play!",
       );
     }
   };
@@ -61,8 +108,10 @@ export default function App() {
   const startGame = () => {
     setPlay(true);
     setGameIndex(0);
-    addBotMessage(" Press 'r' to restart");
-    addBotMessage(`What is ${game_db[0].question}`);
+    addBotMessageDog(
+      "Hello I'm a dog. Only 1 word answers. Press 'r' to restart",
+    );
+    addBotMessageDog(`${game_db[0].question}`);
   };
 
   // this can be the game logic
@@ -75,25 +124,26 @@ export default function App() {
     console.log(curr_problem.answer);
 
     if (userMessages[0].text == curr_problem.answer) {
-      addBotMessage("Correct! Press 'r' to restart");
+      addBotMessageDog(
+        `${curr_problem.answer} is correct! Only one word answers. Press 'r' to restart`,
+      );
     } else if (userMessages[0].text.toLowerCase() == "r") {
       setPlay(false);
-      addBotMessage("Thank you for playing");
+      addBotMessageDog("Bye Bye from dog. Thank you for playing");
       addBotMessage("Say 'yes' to play again.");
       my_bool = false;
     } else {
-      addBotMessage("Incorrect. Press 'r' to restart");
+      addBotMessageDog(
+        `Incorrect, it's ${curr_problem.answer}. Press 'r' to restart`,
+      );
     }
 
     if (my_bool) {
-      if (gameIndex + 1 <= 2) {
-        // let nextIndex = gameIndex + 1;
+      if (gameIndex + 1 <= game_db.length - 1) {
         setGameIndex(gameIndex + 1);
-        addBotMessage(
-          `Next question: What is ${game_db[gameIndex + 1].question}?`,
-        );
+        addBotMessageDog(`Next question: ${game_db[gameIndex + 1].question}`);
       } else {
-        addBotMessage("Game over. Say 'yes' to play again.");
+        addBotMessage("Hi I'm a cat. Game over. Say 'yes' to play again.");
         setPlay(false);
       }
     }
@@ -105,6 +155,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      <Text>hello</Text>
       <SafeAreaView style={{ flex: 1 }}>
         {play ? (
           <GiftedChat
