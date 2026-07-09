@@ -27,7 +27,7 @@ const game_db = [
   { question: "What can fill a room but takes up no space?", answer: "Light" },
   {
     question:
-      "If you drop me I’m sure to crack, but give me a smile and I’ll always smile back. What am I?",
+      "If you drop me Im sure to crack, but give me a smile and Ill always smile back. What am I?",
     answer: "Mirror",
   },
   {
@@ -155,7 +155,6 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <Text>hello</Text>
       <SafeAreaView style={{ flex: 1 }}>
         {play ? (
           <GiftedChat
